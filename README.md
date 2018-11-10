@@ -15,7 +15,7 @@ La solución planteada esta basada en un Estilo orientado a servicios, represent
   - (Despachador/Traductor) Broker
 ### Propuesta arquitectónica
 Implementación patrón nuclear publish and suscriber para coreografía de eventos/mensajes que se gestiónan a través de Apache KAFKA. Los tópicos que manejará Kafka son:
->>Router: 
+>>Router: HOLI
 >>
 >>Response:
 >>
