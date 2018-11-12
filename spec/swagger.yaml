@@ -1,0 +1,120 @@
+swagger: '2.0'
+info:
+  description: 'A continuación se describen cada una de las funcionalidades que son expuestas por el banco para la consulta, pago y compensación de servicios públicos.'
+  version: 1.0.0
+  title: Servicios públicos Banco ABC
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost:3000
+basePath: /banco
+tags:
+  - name: consulta
+    description: Consulte su factura de pago
+  - name: pago
+    description: Pago de servicios públicos y privados
+  - name: compensación
+    description: Compensación en el pago de los servicios públicos y privados
+schemes:
+  - http
+paths:
+  /findInvoice:
+    get:
+      tags:
+        - consulta
+      summary: Consultar factura servicio público
+      operationId: findInvoice
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: invoiceId
+          in: query
+          description: Identificación de la factura que necesita ser consultada
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          schema:
+            $ref: '#/definitions/Invoice'
+        '400':
+          description: Identificador no valido
+        '404':
+          description: Factura no encontrada
+  /pay/invoice:
+    post:
+      tags:
+        - pago
+      summary: Pago de factura
+      description: ''
+      operationId: payInvoice
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Datos pago factura
+          required: true
+          schema:
+            $ref: '#/definitions/Invoice'
+      responses:
+        '200':
+          description: Operación exitosa
+          schema:
+            $ref: '#/definitions/Payment'
+        '400':
+          description: Datos incorrectos
+        '404':
+          description: Factura no encontrada
+  /compensate/invoice:
+    post:
+      tags:
+        - compensación
+      summary: Compensación de factura
+      description: ''
+      operationId: compensateInvoice
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Datos compensar factura
+          required: true
+          schema:
+            $ref: '#/definitions/Invoice'
+      responses:
+        '200':
+          description: Operación exitosa
+          schema:
+            $ref: '#/definitions/Payment'
+        '400':
+          description: Datos incorrectos
+        '404':
+          description: Factura no encontrada
+definitions:
+  Invoice:
+    type: object
+    properties:
+      invoiceId:
+        type: string
+      valor:
+        type: number
+    xml:
+      name: Invoice
+  Payment:
+    type: object
+    properties:
+      invoiceId:
+        type: string
+      valor:
+        type: number
+      comprobante:
+        type: string
+      fecha:
+        type: string
+        format: date-time
+    xml:
+      name: Payment
