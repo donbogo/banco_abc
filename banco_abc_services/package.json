@@ -1,0 +1,19 @@
+{
+  "name": "banco_abc_services",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "m_bogota@javeriana.edu.co",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "js2xmlparser": "^3.0.0",
+    "kafka-node": "^3.0.1"
+  }
+}
