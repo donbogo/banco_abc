@@ -1,0 +1,18 @@
+{
+  "name": "banco_abc_broker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "m_bogota@javeriana.edu.co",
+  "license": "MIT",
+  "dependencies": {
+    "http": "0.0.0",
+    "kafka-node": "^3.0.1",
+    "soap": "^0.25.0",
+    "xml2js": "^0.4.19"
+  }
+}
