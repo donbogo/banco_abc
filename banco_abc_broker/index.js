@@ -43,6 +43,9 @@ consumer.on('message', function (message) {
             soap.createClient(url, function (err, client) {
                 if (client) {
                     client[contratoSoap.nombre](args, (err, result) => {
+                        if (err) {
+                            console.error(err);
+                        }
                         console.log(result);
                         Object.keys(response).forEach(function (key) {
                             let params = response[key] ? response[key].split('.') : [];
@@ -104,7 +107,10 @@ consumer.on('message', function (message) {
                 hostname: url,
                 port: rest.port,
                 path: path,
-                method: rest.method
+                method: rest.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             };
             const req = http.request(options, (res) => {
                 let response = {};
@@ -187,6 +193,9 @@ consumer.on('message', function (message) {
             req.on('error', (e) => {
                 console.error(`problem with request: ${e.message}`);
             });
+            if (body) {
+                req.write(JSON.stringify(body));
+            }
             req.end();
         }
     }
@@ -201,11 +210,30 @@ consumer.on('offsetOutOfRange', function (err) {
 });
 
 function parse(args, data) {
+    let isBody = false;
     let params = JSON.parse(args.replace(/'/g, '\"'));
     for (let p in params) {
-        params[p] = data[params[p]];
+        if (typeof params[p] == 'object') {
+            isBody = getData(params[p], data);
+        } else if (data[params[p]]) {
+            isBody = true;
+            params[p] = data[params[p]];
+        }
     }
-    return params;
+    return isBody ? params : null;
+};
+
+function getData(params, data, isBody) {
+    for (let p in params) {
+        isBody = true;
+        if (typeof params[p] == 'object') {
+            getData(params[p], data);
+        } else if (data[params[p]]) {
+            isBody = true;
+            params[p] = data[params[p]];
+            return isBody;
+        }
+    }
 };
 
 function urlQuery(query, url) {
@@ -217,14 +245,16 @@ function urlQuery(query, url) {
 
 function urlPath(path, url) {
     let index = 0;
-    Object.keys(path).forEach(function (key) {
-        if (index == 0) {
-            url = url + '?';
-        } else {
-            url = url + '&';
-        }
-        url = url + key + '=' + path[key];
-        index++;
-    });
+    if (path) {
+        Object.keys(path).forEach(function (key) {
+            if (index == 0) {
+                url = url + '?';
+            } else {
+                url = url + '&';
+            }
+            url = url + key + '=' + path[key];
+            index++;
+        });
+    }
     return url;
 };
