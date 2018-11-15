@@ -15,12 +15,11 @@ La solución planteada esta basada en un Estilo orientado a servicios, represent
   - (Despachador/Traductor) Broker
 ### Propuesta arquitectónica
 Implementación patrón nuclear publish and suscriber para coreografía de eventos/mensajes que se gestiónan a través de Apache KAFKA. Los tópicos que manejará Kafka son:
->>Router: 
+>>ROUTER: componente de catálogo con persistencia que almacena la configuración y comportamiento de la solución. Almacena los end-points, metidos, parámetros y esquemas que son necesario para traducir y orientar la canalización de una petición. Si detecta la configuración realiza la tradución del mensaje y canaliza al BROKER para la transmisión al destino.
 >>
->>Response:
+>>RESPONSE: componente que recibe y canaliza los mensajes de respuesta (cualquiera) al extremo de origen.
 >>
->>Broker:
->>
+>>BROKER: componente que recibe un mensaje y ruta de destino, se comporta como un Proxy-Cliente para consumir el end-point con la configuración suministrada por el ROUTER.
 
 ![alt text](https://github.com/donbogo/banco_abc/blob/master/Contexto.jpg)
 
