@@ -5,12 +5,7 @@ const mongoose = require('mongoose');
 const config = require('./config');
 const contratoCtrl = require('./controllers/contrato');
 // Conexión a MongoDB
-const promise = mongoose.connect(config.db, { useNewUrlParser: true });
-// promise.then((db) => {
-//     console.log(`MongoDB: ${config.db}`);
-// }, (error) => {
-//     console.log(`Error al conectar a la base de datos: ${error}`);
-// });
+mongoose.connect(config.db, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Conection error'));
 db.once('open', () => {
